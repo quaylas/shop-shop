@@ -56,7 +56,7 @@ const resolvers = {
       const url = new URL(context.headers.referer).origin;
       const order = new Order({ products: args.products });
       const { products } = await order.populate('products').execPopulate();
-      console.log(products);
+      
       const line_items = [];
   
       for (let i = 0; i < products.length; i++){
@@ -80,8 +80,6 @@ const resolvers = {
           quantity: 1
         });
       };
-
-      console.log(line_items);
   
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -101,7 +99,6 @@ const resolvers = {
       return { token, user };
     },
     addOrder: async (parent, { products }, context) => {
-      console.log(context);
       if (context.user) {
         const order = new Order({ products });
 
